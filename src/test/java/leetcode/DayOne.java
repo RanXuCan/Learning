@@ -2,7 +2,7 @@ package leetcode;
 
 import org.junit.Test;
 
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * @Description:
@@ -136,6 +136,38 @@ public class DayOne {
         String[] strs = {"abcabcb", "bbbbb", "pwwkew", "", " "};
         for (String s : strs) {
             System.out.println(lengthOfLongestSubstring(s));
+        }
+    }
+
+    @Test
+    public void hashMapTest() {
+        HashMap<Integer, String> s = new HashMap<>();
+        s.put(1, "a");
+        s.put(2, "b");
+        s.put(3, "c");
+        s.put(4, "d");
+        s.put(5, "e");
+        s.put(6, "f");
+        s.put(7, "g");
+        s.put(8, "h");
+        s.put(9, "a");
+        s.put(10, "b");
+        Set<Integer> keySet = s.keySet();
+        for (Integer i : keySet) {
+            System.out.println(i + "=" + s.get(i));
+        }
+
+
+        System.out.println(s.containsKey(3));
+        System.out.println(s.containsValue("d"));
+        s.remove(1);
+        System.out.println(s.size());
+
+
+        Set<Map.Entry<Integer, String>> entrySet = s.entrySet();
+        for (Map.Entry<Integer, String> e : entrySet) {
+            System.out.println(e.toString());
+            System.out.println(e.getKey() + "----------->" + e.getValue());
         }
     }
 }
