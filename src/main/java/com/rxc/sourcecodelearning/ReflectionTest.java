@@ -12,13 +12,26 @@ import java.util.Scanner;
  * @Author RanXuCan
  * @Date 2020/9/14 18:00
  */
-public class reflectionTest {
+public class ReflectionTest {
 
     public static void main(String[] argv) {
         System.out.println("请输入某个类的全路径名：");
         Scanner scanner = new Scanner(System.in);
         String className = scanner.next().trim();
         printClass(className);
+
+        System.out.println(fun(9));
+
+    }
+
+    public static int fun(int i) {
+        if (i == 1)
+            return 1;
+        if (i == 2)
+            return 2;
+        if (i > 2)
+            return fun(i - 1) + fun(i - 2);
+        else return 0;
     }
 
     public static void printClass(String string) {
