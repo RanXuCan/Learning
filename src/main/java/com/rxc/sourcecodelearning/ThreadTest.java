@@ -2,6 +2,8 @@ package com.rxc.sourcecodelearning;
 
 import lombok.Data;
 
+import java.util.concurrent.*;
+
 /**
  * @Description:
  * @Author RanXuCan
@@ -17,10 +19,24 @@ public class ThreadTest {
         t2.setName("乙");
         t1.start();
         t2.start();
+
+        execute02();
+
+        try {
+            execute03();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            execute04();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     static class MyThread implements Runnable {
-        private Account account;
+        private final Account account;
 
         MyThread(Account account) {
             this.account = account;
@@ -46,6 +62,50 @@ public class ThreadTest {
                 }
             }
         }
+    }
+
+    //第二种方式，继承Thread类
+    static class MyThread02 extends Thread {
+
+        @Override
+        public void run() {
+            System.out.println(Thread.currentThread().getName() + "使用继承Thread的方式实现多线程时执行的run方法");
+        }
+    }
+
+    private static void execute02() {
+        MyThread02 mythread02 = new MyThread02();
+        mythread02.start();
+    }
+
+    //第三种方式，实现Callable接口
+    static class Mythread03 implements Callable {
+
+        @Override
+        public Object call() {
+            return Thread.currentThread().getName() + "实现Callable接口调用线程时执行的call()方法\n";
+        }
+    }
+
+    private static void execute03() throws ExecutionException, InterruptedException {
+        Mythread03 mythread03 = new Mythread03();
+        FutureTask futureTask = new FutureTask(mythread03);
+        Thread thread = new Thread(futureTask);
+        thread.start();
+        //如果关心线程的返回值，则继续使用get方法获取
+        Object o = futureTask.get();
+        System.out.println(o.toString());
+    }
+
+    //第四种方式，使用线程池
+    private static void execute04() throws ExecutionException, InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        executorService.execute(new MyThread02());//实现Runnable
+        Future submit = executorService.submit(new Mythread03());//实现Callable
+        Object o = submit.get();
+        System.out.println(o);
+
+        executorService.shutdown();
     }
 
     @Data
